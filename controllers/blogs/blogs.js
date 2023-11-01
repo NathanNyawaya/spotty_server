@@ -114,12 +114,12 @@ export const updateBlog = async (req, res) => {
 // delete property
 export const deleteBlog = async (req, res) => {
   try {
-    const blog_to_delete = await Blog.findById(req.params.id);
-    if (blog_to_delete.user_id === req.body.userId) {
-      await blog_to_delete.deleteOne();
-      res.status(200).json("the blog_to_delete has been deleted");
+    const blog_id = req.params.id;
+    const blog_deleted = await Blog.findOneAndDelete({ _id: blog_id });
+    if (blog_deleted) {
+      res.status(200).json({ message: "Blog deleted status 200" });
     } else {
-      res.status(403).json("you can delete only your blog_to_delete");
+      res.status(404).json({ message: "Blog deleted status 200" });
     }
   } catch (err) {
     res.status(500).json(err);
