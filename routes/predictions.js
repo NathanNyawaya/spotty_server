@@ -5,7 +5,7 @@ import { getAllPredictions } from "../controllers/predictions/predictionsControl
 const router = express.Router();
 
 router.get("/", getAllPredictions);
-// router.get("/epl", getEplPredictions);
+// router.post("/tips", getEplPredictions);
 // router.get("/laliga", getLaligaPredictions);
 // router.get("/bundesliga", getBundesligaPredictions);
 

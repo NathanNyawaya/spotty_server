@@ -9,6 +9,7 @@ import usersRouter from "./routes/users.js";
 import authRouter from "./routes/auth.js";
 import blogsRouter from "./routes/blogs.js";
 import homeRouter from "./routes/home.js";
+import bettingRouter from "./routes/betting.js"
 import livestreamRouter from "./routes/livestreams.js";
 import { livestreamService } from "./services/livestreams/livestreamController.js";
 // import { predictionService } from "./services/predictions/PredictionController.js";
@@ -40,6 +41,7 @@ app.use("/api/users", usersRouter);
 app.use("/api/auth", authRouter);
 app.use("/api/blogs", blogsRouter);
 app.use("/api/livestreams", livestreamRouter);
+app.use("/api/betting", bettingRouter);
 // app.use("/api/predictions", predictionRouter);
 
 // service
