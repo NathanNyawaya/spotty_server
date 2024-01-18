@@ -47,11 +47,7 @@ app.use("/api/betting", bettingRouter);
 app.use("/api/betgreen", betgreenRouter);
 // app.use("/api/predictions", predictionRouter);
 
-// service
-// livestreamService();
-// predictionService();
 
-// startMaintainer()
 
 // mongodb connection
 mongoose.set("strictQuery", true);
@@ -66,3 +62,11 @@ const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`Server started at port --localhost:${PORT}`);
 });
+
+
+
+
+// service
+// livestreamService();
+// predictionService();
+// startMaintainer()
