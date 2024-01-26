@@ -3,6 +3,7 @@ import Soccer from "../../models/betgreen/sportsbook/events/Soccer.js";
 import { fetchLeagues, fetchMarkets } from "../../services/livestreams/LivestreamHandler.js";
 import SoccerLeagues from "../../models/betgreen/sportsbook/events/SoccerLeagues.js";
 import LeagueEvents from "../../models/betgreen/sportsbook/events/LeagueEvents.js";
+import cron from "node-cron"
 
 dotenv.config();
 
@@ -51,10 +52,13 @@ export const soccerLeagueService = async () => {
 
 export const startMaintainer = async () => {
     try {
-        await soccerLeagueService()
-        await marketsService()
-        await processLeagueEvents()
 
+        cron.schedule('0 0 * * *', async () => {
+            console.log('Running the daily maintenance job');
+            await soccerLeagueService()
+            await marketsService()
+            await processLeagueEvents()
+        });
     } catch (error) {
         console.error(error)
     }
@@ -132,11 +136,66 @@ const processLeagueEvents = async () => {
             const leagueEventsDocs = (await Promise.all(promises)).filter(Boolean);
 
             if (leagueEventsDocs.length > 0) {
+                await LeagueEvents.deleteMany()
                 // Use bulk insert for better performance
                 await LeagueEvents.insertMany(leagueEventsDocs);
+                console.log("LeagueEvents processing done")
             }
         }
     } catch (error) {
         console.error(error);
     }
 };
+
+
+function calculateArbitrage(home, draw, away) {
+    const odds = { home, draw, away };
+
+    // Calculate implied probabilities
+    const probHome = 1 / odds.home;
+    const probDraw = 1 / odds.draw;
+    const probAway = 1 / odds.away;
+
+    // Calculate total implied probability
+    const totalProbability = probHome + probDraw + probAway;
+
+    // Check for arbitrage opportunity
+    const arbitrageOpportunity = totalProbability < 1;
+
+    return {
+        odds,
+        totalProbability: totalProbability.toFixed(2),
+        arbitrageOpportunity,
+    };
+}
+
+export const checkArbitrage = async () => {
+    try {
+        const data_ = await LeagueEvents.find();
+        if (data_.length > 0) {
+            data_.forEach(league => {
+                if (league.leagueName != "") {
+                    const events = league.leagueEventsData
+                    events.forEach(event => {
+                        if (event.periods.num_0.money_line != null) {
+                            const odds = event.periods.num_0.money_line
+                            // console.log(odds)
+
+                            // function tp check arbitrage
+
+                            const result = calculateArbitrage(odds.home, odds.draw, odds.away);
+
+                            console.log("Arbitrage Result:", result.totalProbability, result.arbitrageOpportunity);
+
+                            // end
+                        }
+                    })
+                }
+            })
+
+        }
+
+    } catch (error) {
+        console.log(error)
+    }
+}

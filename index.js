@@ -12,7 +12,7 @@ import homeRouter from "./routes/home.js";
 import bettingRouter from "./routes/betting.js"
 import livestreamRouter from "./routes/livestreams.js";
 import { livestreamService } from "./services/livestreams/livestreamController.js";
-import { getAllMarkets, startMaintainer } from "./controllers/betgreen/index.js";
+import { checkArbitrage, getAllMarkets, startMaintainer } from "./controllers/betgreen/index.js";
 import betgreenRouter from "./routes/betgreen.js"
 // import { predictionService } from "./services/predictions/PredictionController.js";
 // import predictionRouter from "./routes/predictions.js";
@@ -70,3 +70,4 @@ app.listen(PORT, () => {
 // livestreamService();
 // predictionService();
 // startMaintainer()
+// checkArbitrage()
