@@ -14,8 +14,8 @@ import livestreamRouter from "./routes/livestreams.js";
 import { livestreamService } from "./services/livestreams/livestreamController.js";
 import { checkArbitrage, getAllMarkets, startMaintainer } from "./controllers/betgreen/index.js";
 import betgreenRouter from "./routes/betgreen.js"
-// import { predictionService } from "./services/predictions/PredictionController.js";
-// import predictionRouter from "./routes/predictions.js";
+import { eplMaintainer } from "./services/stats/stats.js";
+import statsRouter from "./routes/stats.js"
 
 // initialise the app
 const app = express();
@@ -45,6 +45,7 @@ app.use("/api/blogs", blogsRouter);
 app.use("/api/livestreams", livestreamRouter);
 app.use("/api/betting", bettingRouter);
 app.use("/api/betgreen", betgreenRouter);
+app.use("/api/stats", statsRouter)
 // app.use("/api/predictions", predictionRouter);
 
 
@@ -70,4 +71,5 @@ app.listen(PORT, () => {
 // livestreamService();
 // predictionService();
 startMaintainer()
+// eplMaintainer()
 // checkArbitrage()
