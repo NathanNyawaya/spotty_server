@@ -29,7 +29,7 @@ export const eplMaintainer = async () => {
     try {
         const res = await fetchEplData()
         if (res && res.data) {
-            console.log(res.data)
+            // console.log(res.data)
             if (res.data.length > 0) {
                 const standings = res.data
                 await EplStandings.deleteMany()

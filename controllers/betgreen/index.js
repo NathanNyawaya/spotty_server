@@ -4,6 +4,7 @@ import { fetchLeagues, fetchMarkets } from "../../services/livestreams/Livestrea
 import SoccerLeagues from "../../models/betgreen/sportsbook/events/SoccerLeagues.js";
 import LeagueEvents from "../../models/betgreen/sportsbook/events/LeagueEvents.js";
 import cron from "node-cron"
+import { eplMaintainer } from "../../services/stats/stats.js";
 
 dotenv.config();
 
@@ -52,11 +53,16 @@ export const soccerLeagueService = async () => {
 
 export const startMaintainer = async () => {
     try {
+        console.log('Running the daily maintenance job');
+        await soccerLeagueService()
+        await marketsService()
+        await processLeagueEvents()
         cron.schedule('0 0 * * *', async () => {
             console.log('Running the daily maintenance job');
             await soccerLeagueService()
             await marketsService()
             await processLeagueEvents()
+            await eplMaintainer()
         });
     } catch (error) {
         console.error(error)
