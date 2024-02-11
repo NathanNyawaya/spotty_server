@@ -54,20 +54,22 @@ export const soccerLeagueService = async () => {
 export const startMaintainer = async () => {
     try {
         console.log('Running the daily maintenance job');
-        await soccerLeagueService()
-        await marketsService()
-        await processLeagueEvents()
+        await soccerLeagueService();
+        await marketsService();
+        await processLeagueEvents();
+
+        // Schedule the daily maintenance job to run every day at midnight
         cron.schedule('0 0 * * *', async () => {
             console.log('Running the daily maintenance job');
-            await soccerLeagueService()
-            await marketsService()
-            await processLeagueEvents()
-            await eplMaintainer()
+            await soccerLeagueService();
+            await marketsService();
+            await processLeagueEvents();
+            await eplMaintainer();
         });
     } catch (error) {
-        console.error(error)
+        console.error(error);
     }
-}
+};
 
 export const getAllMarkets = async (req, res) => {
     try {
