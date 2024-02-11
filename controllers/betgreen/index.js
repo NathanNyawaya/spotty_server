@@ -52,6 +52,9 @@ export const soccerLeagueService = async () => {
 
 export const startMaintainer = async () => {
     try {
+        await soccerLeagueService()
+            await marketsService()
+            await processLeagueEvents()
 
         cron.schedule('0 0 * * *', async () => {
             console.log('Running the daily maintenance job');
