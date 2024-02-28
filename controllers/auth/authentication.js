@@ -5,17 +5,14 @@ import passport from "passport";
 import LocalStrategy from "passport-local";
 import User from "../../models/User.js";
 import bcrypt from "bcrypt";
-import jwt, { decode } from "jsonwebtoken";
+import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 import confirmToken from "../../models/Token.js";
 import { verifyEmail, successfullRegistered } from "../../utils/sendEmail.js";
-import mongoose from "mongoose";
 
 dotenv.config();
 
 const router = express.Router();
-
-// Add session middleware before passport middleware
 router.use(
   session({
     secret: process.env.SESSION_SECRET,
@@ -34,12 +31,8 @@ router.use(passport.session());
 
 // Register new user and log them in
 export const registerUser = async (req, res, next) => {
-  console.log("hitting register");
-  console.log(req.body);
   try {
     const { username, email, password } = req.body;
-
-    // Check if a user with the same name or email already exists
     const existingUser = await User.findOne({
       $or: [{ userName: username }, { email }],
     });
@@ -151,13 +144,11 @@ export const confirmEmail = async (req, res) => {
           user.emailConfirm = true;
           return user.save();
         } else {
-          // User not found
           throw new Error("User not found");
         }
       })
       .then((updatedUser) => {
         successfullRegistered(updatedUser.email);
-        // console.log("User email confirmed:", updatedUser);
       })
       .catch((error) => {
         console.error("Error updating user:", error);

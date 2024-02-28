@@ -32,7 +32,8 @@ const UserSchema = new mongoose.Schema(
     },
     role: {
       type: String,
-      default: "normalUser"
+      // [level_0, level_2, writer]
+      default: "level_200"
     },
     status: {
       type: Boolean,
