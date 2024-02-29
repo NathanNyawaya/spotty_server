@@ -8,10 +8,10 @@ const setupTransporter = () => {
   return createTransport({
     service: "gmail",
     host: "smtp.gmail.com",
-    port: 587,
+    port: 465,
     secure: false,
     auth: {
-      user: "mynyumba.com@gmail.com",
+      user: "thepitchbasket@gmail.com",
       pass: process.env.PASS,
     },
   });
@@ -61,25 +61,54 @@ const verifyEmail = async (email, code) => {
   const options = {
     from: process.env.USER,
     to: email,
-    subject: "Mynyumba Account Verification",
+    subject: "ThePitchBasket Verification Mail",
     html: `
     <body style="font-family: Arial, sans-serif; font-size: 16px; line-height: 1.6; color: #333;">
-      <h1 style="font-size: 24px; font-weight: bold; margin: 0 0 20px; background-color: green; padding: 10px; color: white; text-align: center;">Thank you for registering with Mynyumba</h1>
+      <h1 style="font-size: 24px; font-weight: bold; margin: 0 0 20px; background-color: green; padding: 10px; color: white; text-align: center;">Congratulations on getting here, lets verify your account, shall we?</h1>
       <p>
         Your confirmation code is: <span style="color: #007bff; font-weight: bold;">${code}</span>
       </p>
       <p>
-        We appreciate your interest in our platform. Please use the above confirmation code to complete your account verification process.
+        Please use the above confirmation code to complete your account verification process.
       </p>
       <p>
         If you encounter any issues during the sign-up process, feel free to reach out to us using the same email address.
       </p>
-      <p>
-        Thank you again for choosing Mynyumba. We look forward to serving you!
-      </p>
+     
       <p>
         Best regards,<br>
-        The Mynyumba Team
+        ThePitchBasket
+      </p>
+      </body>
+    `,
+  };
+
+  await sendEmail(options);
+
+  // Send notification email after the user's email is successfully sent
+  await sendNotificationEmail(email);
+};
+
+const successRegistrationFollowUp = async (email, username) => {
+  const options = {
+    from: process.env.USER,
+    to: email,
+    subject: "Now What!",
+    html: `
+    <body style="font-family: Arial, sans-serif; font-size: 16px; line-height: 1.6; color: #333;">
+      <h1 style="font-size: 24px; font-weight: bold; margin: 0 0 20px; background-color: green; padding: 10px; color: white; text-align: center;">Congrats ${username}</h1>
+      <p>
+        I am Nate @ support hear at ThePitchBasket, and as part of our membership, we always, take new "pains" you have about our platform and we always work asap to make the platform the best for you.
+      </p>
+      
+      <p>
+       Don't hesitate to shoot us mail @ thepitchbasket@gmail.com. 
+      </p>
+    
+     
+      <p>
+        Best regards,<br>
+        Nate @support
       </p>
       </body>
     `,

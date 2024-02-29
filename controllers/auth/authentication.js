@@ -68,13 +68,13 @@ export const registerUser = async (req, res, next) => {
       );
 
       // Generate confirmation token
-      // const newConfirmToken = new confirmToken({
-      //   userID: user._id,
-      //   confirmCode: Math.floor(100000 + Math.random() * 900000).toString(),
-      // });
+      const newConfirmToken = new confirmToken({
+        userID: user._id,
+        confirmCode: Math.floor(100000 + Math.random() * 900000).toString(),
+      });
 
-      // await newConfirmToken.save();
-      // await verifyEmail(user.email, newConfirmToken.confirmCode);
+      await newConfirmToken.save();
+      await verifyEmail(user.email, newConfirmToken.confirmCode);
       res.status(200).json({ token: token, message: "Success Registration" });
     }
   } catch (err) {
