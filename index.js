@@ -70,6 +70,6 @@ app.listen(PORT, () => {
 // service
 // livestreamService();
 // predictionService();
-startMaintainer()
+// startMaintainer()
 
 // checkArbitrage()
