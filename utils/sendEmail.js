@@ -87,37 +87,5 @@ const verifyEmail = async (email, code) => {
 
   // Send notification email after the user's email is successfully sent
   await sendNotificationEmail(email);
-};
-
-const successRegistrationFollowUp = async (email, username) => {
-  const options = {
-    from: process.env.USER,
-    to: email,
-    subject: "Now What!",
-    html: `
-    <body style="font-family: Arial, sans-serif; font-size: 16px; line-height: 1.6; color: #333;">
-      <h1 style="font-size: 24px; font-weight: bold; margin: 0 0 20px; background-color: green; padding: 10px; color: white; text-align: center;">Congrats ${username}</h1>
-      <p>
-        I am Nate @ support hear at ThePitchBasket, and as part of our membership, we always, take new "pains" you have about our platform and we always work asap to make the platform the best for you.
-      </p>
-      
-      <p>
-       Don't hesitate to shoot us mail @ thepitchbasket@gmail.com. 
-      </p>
-    
-     
-      <p>
-        Best regards,<br>
-        Nate @support
-      </p>
-      </body>
-    `,
-  };
-
-  await sendEmail(options);
-
-  // Send notification email after the user's email is successfully sent
-  await sendNotificationEmail(email);
-};
-
+}
 export { verifyEmail, successfullRegistered };
