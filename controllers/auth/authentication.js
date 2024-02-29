@@ -236,7 +236,7 @@ export const loginUser = (req, res, next) => {
     const token = jwt.sign(
       {
         id: user._id,
-        username: user.userName,
+        userName: user.userName,
         email: user.email,
         phoneNumber: user.phoneNumber,
         emailConfirm: user.emailConfirm,
