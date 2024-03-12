@@ -58,6 +58,7 @@ mongoose.connect(process.env.MONGO_URL, {
 });
 console.log("Connection to database --success");
 
+startMaintainer()
 // server listening PORT
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
@@ -70,6 +71,5 @@ app.listen(PORT, () => {
 // service
 // livestreamService();
 // predictionService();
-// startMaintainer()
 
 // checkArbitrage()

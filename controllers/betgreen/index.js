@@ -61,7 +61,7 @@ export const startMaintainer = async () => {
             await eplMaintainer();
 
             // Sleep for 12 hours
-            console.log("sleepin")
+            console.log("sleeping ------")
             await new Promise(resolve => setTimeout(resolve, 12 * 60 * 60 * 1000)); // Sleep for 12 hours
         }
     } catch (error) {
