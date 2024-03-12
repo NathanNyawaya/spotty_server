@@ -50,27 +50,45 @@ export const soccerLeagueService = async () => {
 };
 
 
-
 export const startMaintainer = async () => {
     try {
-        console.log('Running the daily maintenance job');
-        await soccerLeagueService();
-        await marketsService();
-        await processLeagueEvents();
-        await eplMaintainer();
-
-        // Schedule the daily maintenance job to run every day at midnight
-        cron.schedule('0 0 * * *', async () => {
+        while (true) {
+            // Run the maintenance job
             console.log('Running the daily maintenance job');
             await soccerLeagueService();
             await marketsService();
             await processLeagueEvents();
             await eplMaintainer();
-        });
+
+            // Sleep for 12 hours
+            console.log("sleepin")
+            await new Promise(resolve => setTimeout(resolve, 12 * 60 * 60 * 1000)); // Sleep for 12 hours
+        }
     } catch (error) {
         console.error(error);
     }
 };
+
+// export const startMaintainer = async () => {
+//     try {
+//         console.log('Running the daily maintenance job');
+//         // await soccerLeagueService();
+//         // await marketsService();
+//         // await processLeagueEvents();
+//         await eplMaintainer();
+
+//         // Schedule the daily maintenance job to run every day at midnight
+//         cron.schedule('0 0 * * *', async () => {
+//             console.log('Running the daily maintenance job');
+//             await soccerLeagueService();
+//             await marketsService();
+//             await processLeagueEvents();
+//             await eplMaintainer();
+//         });
+//     } catch (error) {
+//         console.error(error);
+//     }
+// };
 
 export const getAllMarkets = async (req, res) => {
     try {
