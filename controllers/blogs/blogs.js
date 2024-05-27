@@ -37,21 +37,54 @@ export const addBlog = async (req, res) => {
     res.status(500).json({ message: "here again", err: err });
   }
 };
-
-// get all properties
+// get all properties with pagination
 export const getAllBlogs = async (req, res) => {
   try {
+    const { pageno = 1, limit = 3 } = req.body;
+    const page = parseInt(pageno);
+    const blogLimit = parseInt(limit);
+    const skip = (page - 1) * blogLimit;
+
     console.log("fetching all blogs ...");
-    const all_blogs = await Blog.find().sort({ createdAt: -1 });
+
+    const all_blogs = await Blog.find()
+      .sort({ createdAt: -1 })
+      .skip(skip)
+      .limit(blogLimit);
+
     if (all_blogs.length > 0) {
-      const blog_fetch_response =
-        all_blogs.length > 0 ? all_blogs : "Empty blogs";
-      res.status(200).json(blog_fetch_response);
+      res.status(200).json(all_blogs);
       console.log(`fetching ${all_blogs.length} blogs status ok`);
+    } else {
+      res.status(200).json("Empty blogs");
+      console.log("fetching 0 blogs status ok");
     }
   } catch (err) {
     console.log("fetching all blogs status failed");
     res.status(500).json(err);
+  }
+};
+export const getClubNews = async (req, res) => {
+  try {
+    const { pageno = 1, limit = 3, club_name } = req.body;
+    const page = parseInt(pageno);
+    const blogLimit = parseInt(limit);
+    const skip = (page - 1) * blogLimit;
+
+    console.log("fetching club news ...");
+
+    const all_blogs = await Blog.find({ club: club_name })
+      .sort({ createdAt: -1 })
+      .skip(skip)
+      .limit(blogLimit);
+
+    if (all_blogs.length > 0) {
+      res.status(200).json({ club_posts: all_blogs, error: false, code: 0 });
+    } else {
+      res.status(200).json({ club_posts: [], error: false, code: 0 });
+    }
+  } catch (err) {
+    res.status(200).json({ club_posts: [], error: true, code: 3 });
   }
 };
 
