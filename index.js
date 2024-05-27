@@ -9,6 +9,7 @@ import usersRouter from "./routes/users.js";
 import authRouter from "./routes/auth.js";
 import blogsRouter from "./routes/blogs.js";
 import homeRouter from "./routes/home.js";
+import requestRouter from "./routes/v1.js";
 import bettingRouter from "./routes/betting.js"
 import livestreamRouter from "./routes/livestreams.js";
 import { livestreamService } from "./services/livestreams/livestreamController.js";
@@ -39,6 +40,7 @@ app.use(function (req, res, next) {
 
 // route
 app.use("/api", homeRouter);
+app.use("/api/v1/", requestRouter);
 app.use("/api/users", usersRouter);
 app.use("/api/auth", authRouter);
 app.use("/api/blogs", blogsRouter);
